@@ -3,14 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } = process.env;
-
-const pool = new pg.Pool({
-  host: POSTGRES_HOST || 'localhost',
-  port: POSTGRES_PORT || 5432,
-  user: POSTGRES_USER || 'postgres',
-  password: POSTGRES_PASSWORD || '221976',
-  database: POSTGRES_DB || 'ecommerce_db',
-});
+const pool = new pg.Pool(
+  process.env.DATABASE_URL 
+    ? { connectionString: process.env.DATABASE_URL }
+    : {
+        host: process.env.POSTGRES_HOST || 'localhost',
+        port: process.env.POSTGRES_PORT || 5432,
+        user: process.env.POSTGRES_USER || 'postgres',
+        password: process.env.POSTGRES_PASSWORD || '221976',
+        database: process.env.POSTGRES_DB || 'ecommerce_db',
+      }
+);
 
 export default pool;

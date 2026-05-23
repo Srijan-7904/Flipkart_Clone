@@ -2,7 +2,8 @@ import * as actionTypes from '../constants/cartConstants';
 
 export const addToCart = (id, quantity) => async (dispatch) => {
     try { 
-        const response = await fetch(`http://localhost:8000/product/${id}`);
+        const URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${URL}/product/${id}`);
         const data = await response.json();
         dispatch({ type: actionTypes.ADD_TO_CART, payload: { ...data, quantity } });
     } catch (error) {
