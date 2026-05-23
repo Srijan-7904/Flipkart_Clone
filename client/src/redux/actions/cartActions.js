@@ -1,13 +1,16 @@
 import * as actionTypes from '../constants/cartConstants';
+import { products } from '../../constant/data';
 
-export const addToCart = (id, quantity) => async (dispatch) => {
+export const addToCart = (id, quantity) => (dispatch) => {
     try { 
-        const URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-        const response = await fetch(`${URL}/product/${id}`);
-        const data = await response.json();
-        dispatch({ type: actionTypes.ADD_TO_CART, payload: { ...data, quantity } });
+        const product = products.find(p => p.id === id);
+        if (product) {
+            dispatch({ type: actionTypes.ADD_TO_CART, payload: { ...product, quantity } });
+        } else {
+            console.error('Product not found in local data');
+        }
     } catch (error) {
-        console.log('Error while calling cart API');
+        console.log('Error while adding to cart');
     }
 };
 
