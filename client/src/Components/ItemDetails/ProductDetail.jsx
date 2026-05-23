@@ -127,7 +127,7 @@ const OfferCard = styled(Box)`
 const ProductDetail = ({ product }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { username } = useContext(LoginContext);
+    const { username, account } = useContext(LoginContext);
 
     const [expanded, setExpanded] = useState('offers');
     const inStock = product.inStock !== false;
@@ -137,12 +137,20 @@ const ProductDetail = ({ product }) => {
     };
 
     const addItemToCart = () => {
+        if (!account) {
+            alert("Please login first to add items to cart.");
+            return;
+        }
         if (!inStock) return;
         dispatch(addToCart(product.id, 1));
         navigate('/cart');
     };
 
     const buyNow = async () => {
+        if (!account) {
+            alert("Please login first to buy products.");
+            return;
+        }
         if (!inStock) return;
         const amount = product.price?.cost ?? 336;
         const orderData = await createRazorpayOrder(amount);

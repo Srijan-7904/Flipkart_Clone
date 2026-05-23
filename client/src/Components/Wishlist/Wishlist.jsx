@@ -88,7 +88,7 @@ const EmptyIcon = styled(Favorite)`
 `;
 
 const Wishlist = () => {
-    const { wishlist, setWishlist } = useContext(LoginContext);
+    const { wishlist, setWishlist, account } = useContext(LoginContext);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -97,6 +97,10 @@ const Wishlist = () => {
     };
 
     const addItemToCart = (id) => {
+        if (!account) {
+            alert("Please login first to add items to cart.");
+            return;
+        }
         dispatch(addToCart(id, 1));
         navigate('/cart');
     };

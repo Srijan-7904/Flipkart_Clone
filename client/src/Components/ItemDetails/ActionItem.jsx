@@ -30,12 +30,16 @@ const StyledImage = styled('img')`
 `;
 
 const ActionItem = ({ product }) => {
-    const { wishlist, setWishlist } = useContext(LoginContext);
+    const { wishlist, setWishlist, account } = useContext(LoginContext);
     const isWishlisted = wishlist.some(item => item.id === product.id);
 
     const toggleWishlist = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (!account) {
+            alert("Please login first to add items to wishlist.");
+            return;
+        }
         if (isWishlisted) {
             setWishlist(wishlist.filter(item => item.id !== product.id));
         } else {
